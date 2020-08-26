@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const Web3 = require('web3');
-const web3 = new Web3(new Web3.providers.HttpProvider("https://dai.poa.network"));
+const web3 = new Web3(new Web3.providers.HttpProvider("https://rpc.tau1.artis.network"));
 const utils = require('./utils/utils');
 const fp = require('lodash/fp');
 const assert = require('assert');
@@ -17,11 +17,11 @@ const KEY_GEN_HISTORY_CONTRACT = '0x8000000000000000000000000000000000000001';
 main();
 
 async function main() {
-  const init_data_file = process.argv[2];
-  assert(init_data_file, "Path to contract initialization file required as first argument!");
+  const init_data_file = process.env.KEYGENHISTORY_CONFIG;
+  assert(init_data_file, "ENV var KEYGENHISTORY_CONFIG missing!");
 
   const rawdata = fs.readFileSync(init_data_file);
-  const init_data = JSON.parse(rawdata);  
+  const init_data = JSON.parse(rawdata);
 
   const networkName = process.env.NETWORK_NAME;
   const networkID = process.env.NETWORK_ID;
@@ -231,6 +231,26 @@ async function main() {
 
   // Build InitializerHbbft contract
   contract = new web3.eth.Contract(contractsCompiled['InitializerHbbft'].abi);
+
+  console.log(`InitializerHbbft ctor: contracts ${[ // _contracts
+    VALIDATOR_SET_CONTRACT,
+    BLOCK_REWARD_CONTRACT,
+    RANDOM_CONTRACT,
+    STAKING_CONTRACT,
+    PERMISSION_CONTRACT,
+    CERTIFIER_CONTRACT,
+    KEY_GEN_HISTORY_CONTRACT
+  ]},
+  owner ${owner},
+  initialValidators ${initialValidators},
+  stakingAddresses ${stakingAddresses},
+  stakingParams ${stakingParams},
+  publicKeysSplit ${publicKeysSplit},
+  internetAddresses ${internetAddresses},
+  init_data.parts ${init_data.parts},
+  init_data.ackes ${init_data.acks},
+  ethToWei ${ethToWei}`);
+
   deploy = await contract.deploy({data: '0x' + contractsCompiled['InitializerHbbft'].bytecode, arguments: [
       [ // _contracts
         VALIDATOR_SET_CONTRACT,
@@ -258,8 +278,8 @@ async function main() {
 
   console.log('Using the following initial validators: ' + initialValidators);
 
-  console.log('Saving spec_hbbft.json file ...');
-  fs.writeFileSync(path.join(__dirname, '..', 'spec_hbbft.json'), JSON.stringify(spec, null, '  '), 'UTF-8');
+  console.log('Saving spec.json file ...');
+  fs.writeFileSync(path.join(__dirname, '..', 'spec.json'), JSON.stringify(spec, null, '  '), 'UTF-8');
   console.log('Done');
 }
 
