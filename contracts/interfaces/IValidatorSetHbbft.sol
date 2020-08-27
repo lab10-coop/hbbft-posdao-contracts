@@ -28,5 +28,6 @@ interface IValidatorSetHbbft {
     function randomContract() external view returns(address);
     function reportMaliciousCallable(address, address, uint256) external view returns(bool, bool);
     function stakingByMiningAddress(address) external view returns(address);
+    function publicKeyByStakingAddress(address) external view returns(bytes memory);
     function stakingContract() external view returns(address);
 }
