@@ -11,7 +11,8 @@
     "flat": "bash scripts/make_flat.sh",
     "solhint": "node_modules/.bin/solhint \"contracts/**/*.sol\"",
     "solidity-docgen": "rm -rf docs/docs/api* && npm i && solidity-docgen --exclude interfaces,libs,ERC677BridgeTokenRewardable.sol,Migrations.sol . contracts docs && node docs/website/sidebars-fix.js",
-    "test": "node scripts/check_for_clashing.js && bash scripts/test.sh"
+    "test": "node scripts/check_for_clashing.js && bash scripts/test.sh",
+    "debug-test-with-ganache-already-running": "node_modules/.bin/truffle test --network test"
   },
   "repository": {
     "type": "git",

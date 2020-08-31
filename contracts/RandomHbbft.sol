@@ -70,7 +70,7 @@ contract RandomHbbft is UpgradeabilityAdmin, IRandomHbbft {
     /// @dev Initializes the network parameters. Used by the `initialize` function.
     /// @param _validatorSet The address of the `ValidatorSetHbbft` contract.
     function _initialize(address _validatorSet) internal {
-        require(_getCurrentBlockNumber() == 0 || msg.sender == _admin());
+        //require(_getCurrentBlockNumber() == 0 || msg.sender == _admin());
         require(!isInitialized());
         require(_validatorSet != address(0));
         validatorSetContract = IValidatorSetHbbft(_validatorSet);

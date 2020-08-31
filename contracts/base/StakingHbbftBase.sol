@@ -403,7 +403,7 @@ contract StakingHbbftBase is UpgradeableOwned, IStakingHbbft {
         address staker = msg.sender;
 
         require(_isWithdrawAllowed(
-            validatorSetContract.miningByStakingAddress(_poolStakingAddress), staker != _poolStakingAddress), 
+            validatorSetContract.miningByStakingAddress(_poolStakingAddress), staker != _poolStakingAddress),
             "OrderWithdraw: not allowed"
         );
 
@@ -835,7 +835,7 @@ contract StakingHbbftBase is UpgradeableOwned, IStakingHbbft {
         bytes32[] memory _publicKeys,
         bytes16[] memory _internetAddresses
     ) internal {
-        require(_getCurrentBlockNumber() == 0 || msg.sender == _admin(),"Initialization only on genesis block or by admin");
+        //require(_getCurrentBlockNumber() == 0 || msg.sender == _admin(),"Initialization only on genesis block or by admin");
         require(!isInitialized(), "Already initialized"); // initialization can only be done once
         require(_validatorSetContract != address(0),"ValidatorSet can't be 0");
         require(_initialStakingAddresses.length > 0, "Must provide initial mining addresses");

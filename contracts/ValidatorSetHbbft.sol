@@ -145,7 +145,7 @@ contract ValidatorSetHbbft is UpgradeabilityAdmin, IValidatorSetHbbft {
             delete _pendingValidators;
         }
         // The very first call of  `finalizeChange` happens in the genesis block (block #0)
-        stakingContract.setStakingEpochStartTime(_getCurrentTimestamp());            
+        stakingContract.setStakingEpochStartTime(_getCurrentTimestamp());
     }
 
     /// @dev Initializes the network parameters. Used by the
@@ -164,7 +164,7 @@ contract ValidatorSetHbbft is UpgradeabilityAdmin, IValidatorSetHbbft {
         address[] calldata _initialMiningAddresses,
         address[] calldata _initialStakingAddresses
     ) external {
-        require(_getCurrentBlockNumber() == 0 || msg.sender == _admin(), "Initialization only on genesis block or by admin");
+        //require(_getCurrentBlockNumber() == 0 || msg.sender == _admin(), "Initialization only on genesis block or by admin");
         require(!isInitialized(), "ValidatorSet contract is already initialized"); // initialization can only be done once
         require(_blockRewardContract != address(0), "BlockReward contract address can't be 0");
         require(_randomContract != address(0), "Random contract address can't be 0");
@@ -195,7 +195,7 @@ contract ValidatorSetHbbft is UpgradeabilityAdmin, IValidatorSetHbbft {
     /// Automatically called by the `BlockRewardHbbft.reward` function at the latest block of the staking epoch.
     function newValidatorSet() external onlyBlockRewardContract {
         address[] memory poolsToBeElected = stakingContract.getPoolsToBeElected();
-    
+
         // Choose new validators
         if (poolsToBeElected.length > MAX_VALIDATORS) {
 
@@ -222,7 +222,7 @@ contract ValidatorSetHbbft is UpgradeabilityAdmin, IValidatorSetHbbft {
         } else {
             _setPendingValidators(poolsToBeElected);
         }
-        
+
         // clear previousValidator KetGenHistory state
         keyGenHistoryContract.clearPrevKeyGenState(_currentValidators);
 
@@ -625,7 +625,7 @@ contract ValidatorSetHbbft is UpgradeabilityAdmin, IValidatorSetHbbft {
                     // The validator has an active pool and is not going to withdraw their
                     // entire stake, so this validator doesn't want to exit from the validator set
                     _pendingValidators.push(pvMiningAddress);
-                }   
+                }
             }
             if (_pendingValidators.length == 0) {
                      _pendingValidators.push(_currentValidators[0]); // add at least on validator
@@ -660,7 +660,7 @@ contract ValidatorSetHbbft is UpgradeabilityAdmin, IValidatorSetHbbft {
     function _banUntil() internal view returns(uint256) {
         uint256 currentTimestamp =  _getCurrentTimestamp();
         uint256 ticksUntilEnd = stakingContract.stakingFixedEpochEndTime().sub(currentTimestamp);
-        // Ban for at least 12 full staking epochs: currentTimestampt + stakingFixedEpochDuration + remainingEpochDuration. 
+        // Ban for at least 12 full staking epochs: currentTimestampt + stakingFixedEpochDuration + remainingEpochDuration.
         return currentTimestamp.add(12 * stakingContract.stakingFixedEpochDuration()).add(ticksUntilEnd);
     }
 
