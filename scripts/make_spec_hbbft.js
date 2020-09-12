@@ -274,7 +274,7 @@ async function main() {
       init_data.acks,
       ethToWei
     ]});
-  spec.accounts['0x7000000000000000000000000000000000000000'] = {
+  spec.accounts['0xA000000000000000000000000000000000000000'] = {
     balance: '0',
     constructor: await deploy.encodeABI()
   };
