@@ -12,16 +12,17 @@ const RANDOM_CONTRACT = '0x3000000000000000000000000000000000000001';
 const STAKING_CONTRACT = '0x1100000000000000000000000000000000000001';
 const PERMISSION_CONTRACT = '0x4000000000000000000000000000000000000001';
 const CERTIFIER_CONTRACT = '0x5000000000000000000000000000000000000001';
+// 0x6... is used by the registry contract which doesn't use the proxy pattern
 const KEY_GEN_HISTORY_CONTRACT = '0x8000000000000000000000000000000000000001';
 
 main();
 
 async function main() {
-  const init_data_file = process.argv[2];
-  assert(init_data_file, "Path to contract initialization file required as first argument!");
+  const init_data_file = process.env.KEYGENHISTORY_CONFIGFILE || process.argv[2];
+  assert(init_data_file, "Path to contract initialization file required as env var or as first argument!");
 
   const rawdata = fs.readFileSync(init_data_file);
-  const init_data = JSON.parse(rawdata);  
+  const init_data = JSON.parse(rawdata);
 
   const networkName = process.env.NETWORK_NAME;
   const networkID = process.env.NETWORK_ID;
