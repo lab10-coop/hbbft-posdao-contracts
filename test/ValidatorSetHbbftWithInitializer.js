@@ -89,7 +89,7 @@ contract('InitializerHbbft', async accounts => {
     internetAddresses = ["0x00000000000000000000000000000001"];
 
     let publicKeysSplit = fp.flatMap(x => [x.substring(0, 66), '0x' + x.substring(66, 130)])(publicKeys);
-    let stakingParams = [1, 1, 80, 10]; // delegatorMinStake, candidateMinStake, stakingFixedEpochDuration, stakingWithdrawDisallowPeriod
+    let stakingParams = [web3.utils.toWei('1', 'ether'), web3.utils.toWei('1', 'ether'), 80, 10]; // delegatorMinStake, candidateMinStake, stakingFixedEpochDuration, stakingWithdrawDisallowPeriod
     let blockReward = web3.utils.toWei('1', 'ether');
 
     let initializerHbbft = await InitializerHbbft.new(
