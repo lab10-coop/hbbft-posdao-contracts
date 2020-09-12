@@ -232,6 +232,28 @@ async function main() {
 
   // Build InitializerHbbft contract
   contract = new web3.eth.Contract(contractsCompiled['InitializerHbbft'].abi);
+
+  console.log(`InitializerHbbft constructor arguments:
+  contracts ${[ // _contracts
+    VALIDATOR_SET_CONTRACT,
+    BLOCK_REWARD_CONTRACT,
+    RANDOM_CONTRACT,
+    STAKING_CONTRACT,
+    PERMISSION_CONTRACT,
+    CERTIFIER_CONTRACT,
+    KEY_GEN_HISTORY_CONTRACT
+  ]},
+  owner ${owner},
+  initialValidators ${initialValidators},
+  stakingAddresses ${stakingAddresses},
+  stakingParams ${stakingParams},
+  publicKeysSplit ${publicKeysSplit},
+  internetAddresses ${internetAddresses},
+  init_data.parts ${init_data.parts},
+  init_data.acks ${init_data.acks},
+  ethToWei ${ethToWei}`
+  );
+
   deploy = await contract.deploy({data: '0x' + contractsCompiled['InitializerHbbft'].bytecode, arguments: [
       [ // _contracts
         VALIDATOR_SET_CONTRACT,
